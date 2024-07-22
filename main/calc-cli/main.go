@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/carleesmarty/CalcApps/handlers"
 	"github.com/carleesmarty/CalcLib"
 )
 
@@ -20,7 +21,7 @@ func main() {
 	args := []string{"add", "10", "67"}
 	calculator := CalcLib.Addition{}
 
-	handler := NewHandler(calculator, os.Stdout)
+	handler := handlers.NewHandler(calculator, os.Stdout)
 	err := handler.Handle(args)
 	if err != nil {
 		log.Printf("Error handling calculation: %s", err)

@@ -5,6 +5,8 @@ import (
 	"io"
 	"os"
 	"strconv"
+
+	"github.com/carleesmarty/CalcLib"
 )
 
 type Handler struct {
@@ -36,7 +38,7 @@ func (h *Handler) Handle(args []string) error {
 	byteResult := []byte(strconv.Itoa(result))
 	_, err := h.out.Write(byteResult)
 	if err != nil {
-		return fmt.Errorf("could not write to output: %s", err)
+		return fmt.Errorf("could not write to output: %w", err)
 	}
 	return err
 }
