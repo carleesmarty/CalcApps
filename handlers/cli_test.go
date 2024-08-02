@@ -12,12 +12,12 @@ func TestHandlerHappyPath(t *testing.T) {
 	buffer := &bytes.Buffer{}
 	handler := NewHandler(calculator, buffer)
 
-	err := handler.Handle([]string{"", "1", "4"})
+	err := handler.Handle([]string{"1", "4"})
 
 	if err != nil {
 		t.Error(err)
 	}
-	if !reflect.DeepEqual(calculator.inputs, []int{1, 4}) {
+	if !reflect.DeepEqual(calculator.inputs, []float64{1, 4}) {
 		t.Errorf("Incorrect inputs: %v", calculator.inputs)
 	}
 	if buffer.String() != "42" {
@@ -42,7 +42,7 @@ func TestHandlerArgumentsLengthPass(t *testing.T) {
 	buffer := &bytes.Buffer{}
 	handler := NewHandler(calculator, buffer)
 
-	err := handler.Handle([]string{"", "1", "4"})
+	err := handler.Handle([]string{"1", "4"})
 	if err != nil {
 		t.Error(err)
 	}
@@ -53,7 +53,7 @@ func TestHandlerArgumentsTypeFail(t *testing.T) {
 	buffer := &bytes.Buffer{}
 	handler := NewHandler(calculator, buffer)
 
-	err := handler.Handle([]string{"", "1", "abcd"})
+	err := handler.Handle([]string{"1", "abcd"})
 	if err == nil {
 		t.Errorf("Incorrect inputs: integers needed")
 	}
@@ -64,7 +64,7 @@ func TestHandlerArgumentsTypeFail2(t *testing.T) {
 	buffer := &bytes.Buffer{}
 	handler := NewHandler(calculator, buffer)
 
-	err := handler.Handle([]string{"", "abcd", "3"})
+	err := handler.Handle([]string{"abcd", "3"})
 	if err == nil {
 		t.Errorf("Incorrect inputs: integers needed")
 	}
@@ -74,7 +74,7 @@ func TestHandleWriteError(t *testing.T) {
 	errorWriter := &ErrorWriter{}
 	calculator := &fakeCalculator{output: 42}
 	handler := NewHandler(calculator, errorWriter)
-	err := handler.Handle([]string{"add", "4", "1"})
+	err := handler.Handle([]string{"4", "1"})
 
 	if err == nil {
 		t.Errorf("Expected and error.")
@@ -86,11 +86,11 @@ func TestHandleWriteError(t *testing.T) {
 }
 
 type fakeCalculator struct {
-	inputs []int
-	output int
+	inputs []float64
+	output float64
 }
 
-func (f *fakeCalculator) Calculate(a, b int) int {
+func (f *fakeCalculator) Calculate(a, b float64) float64 {
 	f.inputs = append(f.inputs, a, b)
 	return f.output
 }
